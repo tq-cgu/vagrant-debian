@@ -66,6 +66,13 @@ if VBoxManage showvminfo "${BOX}" >/dev/null 2>/dev/null; then
     fi
 fi
 
+# Parameter changes from 4.2 to 4.3
+if [[ "$VBOX_VERSION" < 4.3 ]]; then
+  PORTCOUNT="--sataportcount 1"
+else
+  PORTCOUNT="--portcount 1"
+fi
+
 mkdir -p "${FOLDER_ISO}"
 mkdir -p "${FOLDER_VBOX}"
 mkdir -p "${FOLDER_BUILD}/custom"
@@ -139,6 +146,7 @@ mkisofs -r -V "Custom Debian Install CD" -cache-inodes -quiet -J -l \
     "${FOLDER_BUILD}/custom"
 
 info "Creating VM..."
+
 VBoxManage createvm --name "${BOX}" --ostype Debian --register --basefolder "${FOLDER_VBOX}"
 
 VBoxManage modifyvm "${BOX}" --memory 360 --boot1 dvd --boot2 disk \
@@ -148,7 +156,7 @@ VBoxManage storagectl "${BOX}" --name "IDE Controller" --add ide \
     --controller PIIX4 --hostiocache on
 
 VBoxManage storagectl "${BOX}" --name "SATA Controller" --add sata \
-    --controller IntelAhci --sataportcount 1 --hostiocache off
+    --controller IntelAhci $PORTCOUNT --hostiocache off
 
 VBoxManage createhd --filename "${FOLDER_VBOX}/${BOX}/${BOX}.vdi" --size 40960
 
