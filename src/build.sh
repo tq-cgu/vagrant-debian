@@ -106,7 +106,7 @@ fi
 
 info "Unpacking ${DEBIAN_ISO_NAME}..."
 BSDTAR="/usr/local/opt/libarchive/bin/bsdtar"
-if [ ! -a "$BSDTAR" ]; then
+if [ ! "-a "$BSDTAR"" ]; then
     warn "Using system libarchive. May fail on OSX."
     BSDTAR="bsdtar"
 fi
