@@ -18,6 +18,7 @@ esac
 
 VERSION="7.4.0"
 BOX="debian-${VERSION}-${ARCH}"
+VBOX_VERSION="$(VBoxManage --version)"
 
 FOLDER_BASE=$(pwd)
 FOLDER_ISO="${FOLDER_BASE}/iso"
